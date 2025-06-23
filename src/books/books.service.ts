@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException  } from '@nestjs/common';
+import {PrismaService} from "../prisma/prisma.service";
 
 export interface Book {
     id: number;
@@ -17,16 +18,16 @@ export type TypeBook = {
 export class BooksService {
     private books:Book[] = []; // Тут зберігатимуться книги
     private idCounter = 0;
+        constructor(private prisma: PrismaService) {}
 
-    create(bookData:TypeBook):Book {
-            let newBook:Book = {id: this.idCounter,...bookData}
-            this.idCounter++
-            this.books.push(newBook)
-            return newBook
+    async create(bookData:TypeBook) {
+        await this.prisma.modelBook.create({
+            data:bookData
+        })
     }
 
-    findAll(): Book[] {
-        return this.books;
+    async findAll() {
+        return this.prisma.modelBook.findMany();
     }
 
 

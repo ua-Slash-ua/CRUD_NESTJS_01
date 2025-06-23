@@ -8,8 +8,8 @@ export class BooksController {
     }
 
     @Get()
-    findAll(): Book[] {
-        return this.booksService.findAll()
+    async findAll(){
+        return this.booksService.findAll();
     }
 
     @Get(':id')
@@ -18,8 +18,8 @@ export class BooksController {
     }
 
     @Post()
-    create(@Body() bookData:TypeBook):Book|null {
-        return this.booksService.create(bookData)
+    async create(@Body() bookData:TypeBook) {
+        await this.booksService.create(bookData)
     }
 
     @Delete(':id')
